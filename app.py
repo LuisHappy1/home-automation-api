@@ -23,7 +23,6 @@ def lamp_on():
     print('lamp will be turned on')
     rfdevice.tx_code(9407988, 31, 71, 24)  # Off
     rfdevice.tx_code(9407996, 1, 163, 24)  # Onn
-    rfdevice.cleanup()
     return render_template('home.html')
 
 
@@ -32,8 +31,6 @@ def lamp_off():
     print('lamp will be turned off')
     rfdevice.tx_code(9407996, 1, 163, 24)
     rfdevice.tx_code(9407988, 31, 71, 24)
-
-    rfdevice.cleanup()
     return render_template('home.html')
 
 
