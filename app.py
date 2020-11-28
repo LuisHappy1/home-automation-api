@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 rfdevice = RFDevice(17)
 rfdevice.enable_tx()
+rfdevice.tx_repeat = 10
 
 
 @app.route('/')
@@ -17,12 +18,12 @@ def home():
 # on
 # python3 rfrx_send.py 9407996 -p 163 -t 1
 # off
-# python3 rfrx_send.py 9407988 -p 71 -t 31
+# python3 rfrx_send.py 9407988 -p 71 -t 3
 @app.route('/lampOn')
 def lamp_on():
     print('lamp will be turned on')
-    rfdevice.tx_code(9407988, 31, 71, 24)  # Off
-    rfdevice.tx_code(9407996, 1, 163, 24)  # Onn
+    rfdevice.tx_code(9407988, 3, 71, 24)  # Off
+    rfdevice.tx_code(9407996, 1, 163, 24)  # On
     return render_template('home.html')
 
 
@@ -30,7 +31,7 @@ def lamp_on():
 def lamp_off():
     print('lamp will be turned off')
     rfdevice.tx_code(9407996, 1, 163, 24)
-    rfdevice.tx_code(9407988, 31, 71, 24)
+    rfdevice.tx_code(9407988, 3, 71, 24)
     return render_template('home.html')
 
 
