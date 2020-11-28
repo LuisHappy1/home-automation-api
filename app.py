@@ -18,10 +18,21 @@ def home():
 # python3 rfrx_send.py 9407996 -p 163 -t 1
 # off
 # python3 rfrx_send.py 9407988 -p 71 -t 31
-@app.route('/lamp')
-def lamp():
+@app.route('/lampOn')
+def lamp_on():
     print('lamp will be turned on')
+    rfdevice.tx_code(9407988, 31, 71, 24)  # Off
+    rfdevice.tx_code(9407996, 1, 163, 24)  # Onn
+    rfdevice.cleanup()
+    return render_template('home.html')
+
+
+@app.route('/lampOff')
+def lamp_off():
+    print('lamp will be turned off')
     rfdevice.tx_code(9407996, 1, 163, 24)
+    rfdevice.tx_code(9407988, 31, 71, 24)
+
     rfdevice.cleanup()
     return render_template('home.html')
 
