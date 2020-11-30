@@ -6,21 +6,24 @@
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div>
-    <h1>Home Automation</h1>
-    <h2>This is a place where I will control the lights throughout the home.</h2>
-    <div class="active-outlets">
-        <div class="lamp-button">
+<div class="home">
+    <div class="container header-text">
+        <h1>Home Automation</h1>
+        <h2>This is a place where I will control the lights throughout the home.</h2>
+    </div>
+    <div class="active-outlets container">
+        <div class="lamp-button child-container">
             <button id="lampOn" name="lamp">Turn on Lamp</button>
             <button id="lampOff" name="lamp">Turn off Lamp</button>
         </div>
-        <div class="tree-button">
+        <div class="tree-button child-container">
             <button id="treeOn" name="christmas_tree">Turn on Christmas Tree</button>
             <button id="treeOff" name="christmas_tree">Turn off Christmas Tree</button>
         </div>
     </div>
-    <div>
-        <button id="turnOffAllLights">Turn off all Lights</button>
+    <div class="all-outlets container">
+        <button id="turnOnAllLights" name="on">Turn on all Lights</button>
+        <button id="turnOffAllLights" name="off">Turn off all Lights</button>
     </div>
 </div>
 </body>
@@ -44,26 +47,31 @@
             await fetch('/handle-button', data);
         });
 
-        $('#turnOffAllLights').on('click', async (e) => {
+        $('.all-outlets button').on('click', async (e) => {
             e.preventDefault();
             const data = {
-                method: 'GET',
+                method: 'POST',
+                body: JSON.stringify({
+                    lightSetting: e.target.name
+                })
             };
 
-            await fetch('/turn-off-all-lights', data);
+            await fetch('/all-lights', data);
         });
 
         setInterval(async () => {
             const date = new Date();
             const currentTime = `${date.getHours()}:${date.getMinutes()}`;
-            console.log(currentTime === '20:07', currentTime)
-            if (currentTime === '23:45' || currentTime === '20:10') {
+
+            if (currentTime === '23:45') {
                 const data = {
-                    method: 'GET',
+                    method: 'POST',
+                    body: JSON.stringify({
+                        lightSetting: 'off'
+                    })
                 };
-                console.log('Going to shut off all lights now')
-                await fetch('/turn-off-all-lights', data);
+                await fetch('/all-lights', data);
             }
-        }, 1 * 1000)
+        }, 60 * 1000)
     });
 </script>

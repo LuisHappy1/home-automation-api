@@ -3,14 +3,49 @@ body {
     justify-content: center;
 }
 
-input[type=submit] {
-    background-color: #4CAF50; /* Green */
+button {
+    background-color: #42BAFF; /* Green */
     border: none;
     color: white;
-    padding: 2em 3em;
+    padding: 20px 0;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 2em;
+    width: 50%;
+    margin: 0 5px;
+    font-size: 1em;
     border-radius: 20px;
 }
+
+.home {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+
+}
+
+.active-outlets {
+    display: flex;
+    flex-direction: column;
+}
+
+.child-container {
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+

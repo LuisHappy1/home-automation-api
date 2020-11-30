@@ -51,10 +51,11 @@ def handle_button():
     return render_template('home.html')
 
 
-@app.route('/turn-off-all-lights', methods=['GET'])
-def turn_all_lights_off():
+@app.route('/all-lights', methods=['POST'])
+def all_lights():
+    data = json.loads(request.data)
     for outlet in outletCodes:
-        current_outlet = outletCodes[outlet]['off']
+        current_outlet = outletCodes[outlet][data['lightSetting']]
         send_code(current_outlet['code'], current_outlet['protocol'], current_outlet['pulse_length'])
 
     return render_template('home.html')
