@@ -30,7 +30,8 @@
     $(() => {
         $('.active-outlets button').on('click', async (e) => {
             e.preventDefault();
-            const lightSetting = e.target.name.includes('On') ? 'on' : 'off'
+            const lightSetting = e.target.id.includes('On') ? 'on' : 'off'
+            console.log(lightSetting)
             const data = {
                 method: 'POST',
                 body: JSON.stringify({
@@ -55,13 +56,14 @@
         setInterval(async () => {
             const date = new Date();
             const currentTime = `${date.getHours()}:${date.getMinutes()}`;
-            if (currentTime === '23:45' || currentTime === '20:00') {
+            console.log(currentTime === '20:07', currentTime)
+            if (currentTime === '23:45' || currentTime === '20:10') {
                 const data = {
                     method: 'GET',
                 };
-
+                console.log('Going to shut off all lights now')
                 await fetch('/turn-off-all-lights', data);
             }
-        }, 60 * 1000)
+        }, 1 * 1000)
     });
 </script>

@@ -45,7 +45,7 @@ def home():
 def handle_button():
     data = json.loads(request.data)
     current_outlet = outletCodes[data['name']][data['lightSetting']]
-
+    print(current_outlet)
     send_code(current_outlet['code'], current_outlet['protocol'], current_outlet['pulse_length'])
 
     return render_template('home.html')
