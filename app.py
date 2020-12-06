@@ -71,6 +71,10 @@ def control_all_lights(data):
         send_code(current_outlet['code'], current_outlet['protocol'], current_outlet['pulse_length'])
 
 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
+
+
 def check_time(sc):
     now = datetime.datetime.now()
     shutoff_time = "23:45"
@@ -86,6 +90,3 @@ def check_time(sc):
 
 s.enter(60, 1, check_time, (s,))
 s.run()
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')

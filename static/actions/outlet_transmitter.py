@@ -7,3 +7,4 @@ rfdevice.tx_repeat = 10
 
 def send_code(code, protocol, pulse_length, length=24):
     rfdevice.tx_code(code, protocol, pulse_length, length)
+    # pass
