@@ -59,20 +59,5 @@
 
             await fetch('/all-lights', data);
         });
-
-        setInterval(async () => {
-            const date = new Date();
-            const currentTime = `${date.getHours()}:${date.getMinutes()}`;
-
-            if (currentTime === '23:45') {
-                const data = {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        lightSetting: 'off'
-                    })
-                };
-                await fetch('/all-lights', data);
-            }
-        }, 60 * 1000)
     });
 </script>
