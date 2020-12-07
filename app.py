@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 
-import datetime
 import json
-import sched
-import time
-
-from flask import Flask, render_template, request
+from flask import Flask, request, make_response, jsonify
 
 from static.actions.outlet_transmitter import send_code
-
-s = sched.scheduler(time.time, time.sleep)
 
 app = Flask(__name__)
 
@@ -41,52 +35,30 @@ outletCodes = {
 }
 
 
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-
 @app.route('/handle-button', methods=['POST'])
 def handle_button():
     data = json.loads(request.data)
-    current_outlet = outletCodes[data['name']][data['lightSetting']]
-    print(current_outlet)
-    send_code(current_outlet['code'], current_outlet['protocol'], current_outlet['pulse_length'])
+    try:
+        current_outlet = outletCodes[data['name']][data['lightSetting']]
+        send_code(current_outlet['code'], current_outlet['protocol'], current_outlet['pulse_length'])
+        message = f'Lights were successfully turned {data["lightSetting"]}'
+        return make_response(jsonify({'message': message, 'successful': True}), 200)
 
-    return render_template('home.html')
+    except RuntimeError:
+        message = f'There was an error trying to turn on the {data["name"]}'
+        return make_response(jsonify({'message': message, 'successful': False}), 500)
 
 
 @app.route('/all-lights', methods=['POST'])
 def all_lights():
     data = json.loads(request.data)
 
-    control_all_lights(data)
-
-    return render_template('home.html')
-
-
-def control_all_lights(data):
     for outlet in outletCodes:
         current_outlet = outletCodes[outlet][data['lightSetting']]
         send_code(current_outlet['code'], current_outlet['protocol'], current_outlet['pulse_length'])
 
+    return make_response(200)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
-
-
-def check_time(sc):
-    now = datetime.datetime.now()
-    shutoff_time = "23:45"
-    current_time = f"{now.hour}:{now.minute}"
-
-    if current_time == shutoff_time:
-        print("Will now shut off all lights")
-        control_all_lights({'lightSetting': 'off'})
-    else:
-        print(f"Lights are still on {current_time}")
-    s.enter(60, 1, check_time, (sc,))
-
-
-s.enter(60, 1, check_time, (s,))
-s.run()
