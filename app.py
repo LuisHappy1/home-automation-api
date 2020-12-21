@@ -31,9 +31,8 @@ def handle_button():
 @app.route('/api/all-lights', methods=['POST'])
 def all_lights():
     data = json.loads(request.data)
-
     try:
-        for outlet in data:
+        for outlet in data['outlets']:
             handle_transmission(outlet)
 
         message = 'Transmission successful'
